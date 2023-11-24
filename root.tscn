@@ -1,0 +1,51 @@
+[gd_scene load_steps=11 format=3 uid="uid://q88vjhvcktw4"]
+
+[ext_resource type="Script" path="res://Scripts/root.gd" id="1_ux5au"]
+[ext_resource type="Texture2D" uid="uid://x4ngr4toqdoy" path="res://Materials/skybox.jpg" id="2_hmgdl"]
+[ext_resource type="PackedScene" uid="uid://l1d22y2l5fhj" path="res://Objects/Player.tscn" id="2_qdi75"]
+
+[sub_resource type="VisualShader" id="VisualShader_24d51"]
+code = "shader_type spatial;
+render_mode blend_mix, depth_draw_opaque, cull_back, diffuse_lambert, specular_schlick_ggx;
+
+
+
+"
+graph_offset = Vector2(-378.962, -212.041)
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_ptib4"]
+render_priority = 0
+shader = SubResource("VisualShader_24d51")
+
+[sub_resource type="PlaneMesh" id="PlaneMesh_jud83"]
+material = SubResource("ShaderMaterial_ptib4")
+size = Vector2(200, 200)
+
+[sub_resource type="PanoramaSkyMaterial" id="PanoramaSkyMaterial_truqv"]
+panorama = ExtResource("2_hmgdl")
+
+[sub_resource type="Sky" id="Sky_treri"]
+sky_material = SubResource("PanoramaSkyMaterial_truqv")
+
+[sub_resource type="Environment" id="Environment_qeas0"]
+background_mode = 2
+sky = SubResource("Sky_treri")
+
+[sub_resource type="CameraAttributesPractical" id="CameraAttributesPractical_hoqdk"]
+
+[node name="Root" type="Node3D"]
+script = ExtResource("1_ux5au")
+
+[node name="Plane" type="MeshInstance3D" parent="."]
+transform = Transform3D(1.01598, -0.000389155, 0.00058596, 0.000389442, 1.01598, -0.000509953, -0.000585769, 0.000510172, 1.01598, 0, 0, 0)
+mesh = SubResource("PlaneMesh_jud83")
+
+[node name="Player" parent="." instance=ExtResource("2_qdi75")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 6.2361, 7.35182, 7.19872)
+
+[node name="DirectionalLight3D" type="DirectionalLight3D" parent="."]
+transform = Transform3D(0.705006, -0.404375, 0.582622, 2.98023e-08, 0.821518, 0.570183, -0.709202, -0.401982, 0.579175, 0, 0, 0)
+
+[node name="WorldEnvironment" type="WorldEnvironment" parent="."]
+environment = SubResource("Environment_qeas0")
+camera_attributes = SubResource("CameraAttributesPractical_hoqdk")
